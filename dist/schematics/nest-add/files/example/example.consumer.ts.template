@@ -1,0 +1,48 @@
+import { Controller, Logger } from '@nestjs/common';
+import { Ctx, type KafkaContext, Payload } from '@nestjs/microservices';
+import {
+  getKafkaMessageMeta,
+  KafkaEventPattern,
+  KafkaMessagePattern,
+} from 'nest-monorepo-kafka';
+import { KafkaTopics } from '../kafka.topics<%= ext %>';
+import type {
+  ExampleEvent,
+  ExampleReply,
+  ExampleRequest,
+} from './example.messages<%= ext %>';
+
+/**
+ * Kafka consumer. Handlers run inside the Kafka microservice started in main.ts.
+ * KafkaEventPattern/KafkaMessagePattern are Nest's EventPattern/MessagePattern
+ * bound to the Kafka transport.
+ *
+ * If a handler throws, the error is logged and the offset is still committed.
+ * Throw `KafkaRetriableException` from '@nestjs/microservices' instead to have
+ * the message redelivered.
+ */
+@Controller()
+export class ExampleConsumer {
+  private readonly logger = new Logger(ExampleConsumer.name);
+
+  /** Fire-and-forget: published with KafkaProducerService.emit(). */
+  @KafkaEventPattern(KafkaTopics.EXAMPLE_EVENTS)
+  handleExampleEvent(
+    @Payload() event: ExampleEvent,
+    @Ctx() context: KafkaContext,
+  ): void {
+    const { key, partition, offset } = getKafkaMessageMeta(context);
+    this.logger.log(
+      `${KafkaTopics.EXAMPLE_EVENTS} key=${key} partition=${partition} offset=${offset}: ${event.message}`,
+    );
+  }
+
+  /** Request/response: called with KafkaProducerService.send(); the return value is the reply. */
+  @KafkaMessagePattern(KafkaTopics.EXAMPLE_REQUESTS)
+  handleExampleRequest(@Payload() request: ExampleRequest): ExampleReply {
+    return {
+      echoed: request.message,
+      processedAt: new Date().toISOString(),
+    };
+  }
+}

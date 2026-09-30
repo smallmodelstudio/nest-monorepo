@@ -1,0 +1,10 @@
+/**
+ * Every Kafka topic this app produces to or consumes from.
+ * Keep topic names in one place so producers and consumers can't drift apart.
+ */
+export const KafkaTopics = {<% if (example) { %>
+  EXAMPLE_EVENTS: 'example.events',
+  EXAMPLE_REQUESTS: 'example.requests',<% } %>
+} as const;
+
+export type KafkaTopic = (typeof KafkaTopics)[keyof typeof KafkaTopics];

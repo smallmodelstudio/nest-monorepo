@@ -1,0 +1,36 @@
+import { Test, type TestingModule } from '@nestjs/testing';
+import { KafkaProducerService } from 'nest-monorepo-kafka';
+import { <%= className %> } from './<%= name %>.producer<%= ext %>';
+
+describe('<%= className %>', () => {
+  let producer: <%= className %>;
+  const emitted: unknown[][] = [];
+
+  beforeEach(async () => {
+    emitted.length = 0;
+    const moduleRef: TestingModule = await Test.createTestingModule({
+      providers: [
+        <%= className %>,
+        {
+          provide: KafkaProducerService,
+          useValue: {
+            emit: async (...args: unknown[]) => {
+              emitted.push(args);
+              return [];
+            },
+          },
+        },
+      ],
+    }).compile();
+
+    producer = moduleRef.get(<%= className %>);
+  });
+
+  it('publishes to <%= topic %>', async () => {
+    await producer.publish({ hello: 'world' }, { key: 'some-key' });
+
+    expect(emitted).toEqual([
+      ['<%= topic %>', { hello: 'world' }, { key: 'some-key' }],
+    ]);
+  });
+});

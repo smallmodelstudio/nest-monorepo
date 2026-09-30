@@ -1,0 +1,20 @@
+import { Controller, Logger } from '@nestjs/common';
+import { Ctx, type KafkaContext, Payload } from '@nestjs/microservices';
+import { getKafkaMessageMeta, KafkaEventPattern } from 'nest-monorepo-kafka';
+<%= topicsImport %>
+/** Consumes '<%= topic %>'. Replace the payload type with your message shape. */
+@Controller()
+export class <%= className %> {
+  private readonly logger = new Logger(<%= className %>.name);
+
+  @KafkaEventPattern(<%= topicRef %>)
+  async handle(
+    @Payload() message: Record<string, unknown>,
+    @Ctx() context: KafkaContext,
+  ): Promise<void> {
+    const { key, partition, offset } = getKafkaMessageMeta(context);
+    this.logger.log(
+      `${context.getTopic()} key=${key} partition=${partition} offset=${offset}: ${JSON.stringify(message)}`,
+    );
+  }
+}

@@ -1,0 +1,1 @@
+{"version":3,"file":"schema.d.ts","sourceRoot":"","sources":["../../../schematics/nest-add/schema.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,cAAc;IAC7B,UAAU,CAAC,EAAE,MAAM,CAAC;IACpB,OAAO,CAAC,EAAE,OAAO,CAAC;IAClB,MAAM,CAAC,EAAE,OAAO,CAAC;IACjB,IAAI,CAAC,EAAE,OAAO,CAAC;IACf,WAAW,CAAC,EAAE,OAAO,CAAC;CACvB"}

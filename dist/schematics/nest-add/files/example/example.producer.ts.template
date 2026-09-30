@@ -1,0 +1,26 @@
+import { Injectable } from '@nestjs/common';
+import { KafkaProducerService } from 'nest-monorepo-kafka';
+import { KafkaTopics } from '../kafka.topics<%= ext %>';
+import type {
+  ExampleEvent,
+  ExampleReply,
+  ExampleRequest,
+} from './example.messages<%= ext %>';
+
+/** Typed producer for the example topics. */
+@Injectable()
+export class ExampleProducer {
+  constructor(private readonly kafka: KafkaProducerService) {}
+
+  async publishEvent(event: ExampleEvent): Promise<void> {
+    // Using the id as the key keeps all messages for one entity on one partition, in order.
+    await this.kafka.emit(KafkaTopics.EXAMPLE_EVENTS, event, { key: event.id });
+  }
+
+  request(message: string): Promise<ExampleReply> {
+    return this.kafka.send<ExampleReply, ExampleRequest>(
+      KafkaTopics.EXAMPLE_REQUESTS,
+      { message },
+    );
+  }
+}

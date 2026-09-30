@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "NestMonorepoKafkaConsumer",
+  "title": "Kafka consumer",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Consumer name, e.g. `orders` generates OrdersConsumer.",
+      "$default": { "$source": "argv", "index": 0 },
+      "x-prompt": "What name would you like to use for the consumer?"
+    },
+    "topic": {
+      "type": "string",
+      "description": "Topic to consume. Defaults to the dasherized name."
+    },
+    "path": {
+      "type": "string",
+      "description": "Path within the source root to create the consumer in."
+    },
+    "sourceRoot": { "type": "string", "default": "src" },
+    "flat": { "type": "boolean", "default": false, "description": "Do not create a folder for the consumer." },
+    "spec": { "type": "boolean", "default": true, "description": "Generate a spec file." },
+    "specFileSuffix": { "type": "string", "default": "spec" },
+    "skipImport": { "type": "boolean", "default": false, "description": "Do not register the consumer in the nearest module." },
+    "language": { "type": "string" },
+    "format": { "type": "boolean" },
+    "project": { "type": "string" }
+  },
+  "required": ["name"]
+}

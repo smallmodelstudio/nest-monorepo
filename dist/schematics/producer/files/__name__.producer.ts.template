@@ -1,0 +1,15 @@
+import { Injectable } from '@nestjs/common';
+import { KafkaProducerService, type KafkaPublishOptions } from 'nest-monorepo-kafka';
+<%= topicsImport %>
+/** Publishes to '<%= topic %>'. Replace the message type with your message shape. */
+@Injectable()
+export class <%= className %> {
+  constructor(private readonly kafka: KafkaProducerService) {}
+
+  async publish(
+    message: Record<string, unknown>,
+    options?: KafkaPublishOptions,
+  ): Promise<void> {
+    await this.kafka.emit(<%= topicRef %>, message, options);
+  }
+}

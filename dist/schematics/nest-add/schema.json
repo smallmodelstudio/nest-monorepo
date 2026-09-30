@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "NestMonorepoKafkaNestAdd",
+  "title": "Add Kafka to a NestJS project",
+  "type": "object",
+  "properties": {
+    "sourceRoot": {
+      "type": "string",
+      "description": "Nest source root (passed by the Nest CLI).",
+      "default": "src"
+    },
+    "example": {
+      "type": "boolean",
+      "description": "Generate an example consumer, producer and HTTP trigger controller.",
+      "default": true
+    },
+    "docker": {
+      "type": "boolean",
+      "description": "Generate docker-compose.kafka.yml (Kafka in KRaft mode + Kafka UI) and kafka:* package scripts.",
+      "default": true
+    },
+    "main": {
+      "type": "boolean",
+      "description": "Patch main.ts to start a Kafka consumer alongside the HTTP server (hybrid app).",
+      "default": true
+    },
+    "skipInstall": {
+      "type": "boolean",
+      "description": "Do not install @nestjs/microservices and kafkajs after updating package.json.",
+      "default": false
+    },
+    "language": { "type": "string" },
+    "spec": { "type": "boolean" },
+    "flat": { "type": "boolean" },
+    "specFileSuffix": { "type": "string" },
+    "format": { "type": "boolean" },
+    "project": { "type": "string" }
+  },
+  "required": []
+}
