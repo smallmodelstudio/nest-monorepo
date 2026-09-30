@@ -3,7 +3,9 @@
 Drop-in Kafka for NestJS 12. It wraps [`@nestjs/microservices` Kafka](https://docs.nestjs.com/microservices/kafka) and adds a Nest CLI schematic that sets up a working producer, consumer, local broker and config in one command:
 
 ```bash
-nest add nest-monorepo-kafka
+pnpm add github:smallmodelstudio/nest-monorepo#kafka-v0.1.0
+nest add nest-monorepo-kafka --skip-install
+pnpm install
 ```
 
 ## What you get
@@ -25,15 +27,23 @@ nest add nest-monorepo-kafka
 
 ## Install
 
-### Option A: `nest add` (recommended)
+The package is published as tagged releases on GitHub, not on npm. Install it in each project that uses it, not globally: the generated code imports it at runtime, and the Nest CLI only finds schematics in the project's own `node_modules`.
+
+### Option A: install from GitHub, then `nest add` (recommended)
 
 From the root of a Nest project:
 
 ```bash
-nest add nest-monorepo-kafka
+pnpm add github:smallmodelstudio/nest-monorepo#kafka-v0.1.0   # or: npm install / yarn add
+nest add nest-monorepo-kafka --skip-install
+pnpm install                                                   # installs @nestjs/microservices + kafkajs
 ```
 
-This installs the package, then:
+`--skip-install` stops `nest add` from trying to download the package from npm, where it doesn't exist. It also skips installing the dependencies the schematic adds to `package.json`, hence the final `pnpm install`. (Once the package is on npm, a plain `nest add nest-monorepo-kafka` does all three steps.)
+
+To upgrade later, install the newer tag: `pnpm add github:smallmodelstudio/nest-monorepo#kafka-v0.2.0`. Releases are listed under the repo's tags.
+
+The schematic then makes these changes:
 
 | Change | Details |
 | --- | --- |
@@ -77,7 +87,7 @@ If your `main.ts` or `app.module.ts` doesn't look like the Nest default, the sch
 ### Option B: manual install
 
 ```bash
-pnpm add nest-monorepo-kafka @nestjs/microservices kafkajs
+pnpm add github:smallmodelstudio/nest-monorepo#kafka-v0.1.0 @nestjs/microservices kafkajs
 ```
 
 ```ts

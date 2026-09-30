@@ -10,6 +10,11 @@
     "schematics"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smallmodelstudio/nest-monorepo.git",
+    "directory": "packages/kafka"
+  },
   "type": "module",
   "main": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",

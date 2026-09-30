@@ -14,6 +14,7 @@
     "test": "pnpm -r --filter \"./packages/*\" test",
     "typecheck": "pnpm -r --filter \"./packages/*\" typecheck",
     "clean": "pnpm -r --filter \"./packages/*\" clean",
+    "release:kafka": "node scripts/release-github.mjs packages/kafka",
     "format": "prettier --write \"packages/*/{src,schematics,test}/**/*.ts\" \"*.md\" \"packages/*/*.md\""
   },
   "devDependencies": {

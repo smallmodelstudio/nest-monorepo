@@ -13,8 +13,10 @@ A pnpm workspace of drop-in NestJS packages. Each package is published to npm on
 Requires Node.js `^22.22.3 || ^24.15.0`, a NestJS 12 project, and Docker for the local broker.
 
 ```bash
-# 1. In your Nest project: install + scaffold everything
-nest add nest-monorepo-kafka
+# 1. In your Nest project: install from a GitHub release tag, then scaffold
+pnpm add github:smallmodelstudio/nest-monorepo#kafka-v0.1.0
+nest add nest-monorepo-kafka --skip-install
+pnpm install
 
 # 2. Start a local Kafka broker (localhost:9092) and Kafka UI (http://localhost:8080)
 pnpm kafka:up
@@ -94,13 +96,21 @@ nest g -c /path/to/nest-monorepo/packages/kafka/dist/schematics/collection.json 
 - Schematic factories are compiled from `schematics/**/index.ts`. Templates in `schematics/**/files/` are copied to `dist/` as-is by `scripts/copy-schematic-assets.mjs`.
 - Schematic tests (`test/*.schematic.spec.ts`) run the compiled collection against an in-memory Nest project, so `pnpm test` builds first.
 
-### Publishing
+### Publishing a release to GitHub
+
+Packages are released as git tags, so any repo can install them without npm:
 
 ```bash
-cd packages/kafka
-pnpm version patch       # or minor / major
-pnpm publish             # prepack runs the build
+# 1. bump "version" in packages/kafka/package.json and commit it
+# 2. build, commit the packed files to the dist/kafka branch, tag kafka-v<version>, push
+pnpm release:kafka
 ```
+
+`scripts/release-github.mjs` packs the package exactly as npm would (`package.json` without scripts/devDependencies, `dist/`, `README.md`), commits that to a `dist/<package>` branch, and pushes it with a `<package>-v<version>` tag. It refuses to run with uncommitted changes or if the tag already exists. Pass `--no-push` to create the branch and tag locally without pushing.
+
+Consumers install a tag with `pnpm add github:smallmodelstudio/nest-monorepo#kafka-v<version>`.
+
+To publish to npm instead: `cd packages/kafka && pnpm publish` (prepack runs the build). After that, plain `nest add nest-monorepo-kafka` works.
 
 ### Adding a new package
 
