@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "NestMonorepoKafkaProducer",
+  "title": "Kafka producer",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Producer name, e.g. `orders` generates OrdersProducer.",
+      "$default": { "$source": "argv", "index": 0 },
+      "x-prompt": "What name would you like to use for the producer?"
+    },
+    "topic": {
+      "type": "string",
+      "description": "Topic to publish to. Defaults to the dasherized name."
+    },
+    "path": {
+      "type": "string",
+      "description": "Path within the source root to create the producer in."
+    },
+    "sourceRoot": { "type": "string", "default": "src" },
+    "flat": { "type": "boolean", "default": false, "description": "Do not create a folder for the producer." },
+    "spec": { "type": "boolean", "default": true, "description": "Generate a spec file." },
+    "specFileSuffix": { "type": "string", "default": "spec" },
+    "skipImport": { "type": "boolean", "default": false, "description": "Do not register the producer in the nearest module." },
+    "language": { "type": "string" },
+    "format": { "type": "boolean" },
+    "project": { "type": "string" }
+  },
+  "required": ["name"]
+}

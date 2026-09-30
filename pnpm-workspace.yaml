@@ -1,0 +1,7 @@
+packages:
+  - 'packages/*'
+minimumReleaseAgeExclude:
+  - '@nestjs/common@12.1.2'
+  - '@nestjs/core@12.1.2'
+  - '@nestjs/microservices@12.1.2'
+  - '@nestjs/testing@12.1.2'

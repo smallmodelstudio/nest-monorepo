@@ -1,0 +1,29 @@
+import { Module } from '@nestjs/common';
+import { KafkaModule, kafkaOptionsFromEnv } from 'nest-monorepo-kafka';
+<% if (example) { %>import { ExampleConsumer } from './example/example.consumer<%= ext %>';
+import { ExampleController } from './example/example.controller<%= ext %>';
+import { ExampleProducer } from './example/example.producer<%= ext %>';
+<% } %>import { KafkaTopics } from './kafka.topics<%= ext %>';
+
+/**
+ * Kafka wiring for this app.
+ *
+ * Connection settings come from KAFKA_* environment variables (see .env.example);
+ * the defaults match the local broker in docker-compose.kafka.yml.
+ * `KafkaProducerService` is global, so any provider can inject it.
+ */
+@Module({
+  imports: [
+    KafkaModule.forRootAsync({
+      isGlobal: true,
+      useFactory: () => ({
+        kafka: kafkaOptionsFromEnv(),
+        // Topics you call KafkaProducerService.send() on (request/response).
+        requestReplyTopics: [<% if (example) { %>KafkaTopics.EXAMPLE_REQUESTS<% } %>],
+      }),
+    }),
+  ],<% if (example) { %>
+  controllers: [ExampleConsumer, ExampleController],
+  providers: [ExampleProducer],<% } %>
+})
+export class AppKafkaModule {}

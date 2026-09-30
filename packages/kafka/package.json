@@ -1,0 +1,63 @@
+{
+  "name": "nest-monorepo-kafka",
+  "version": "0.1.0",
+  "description": "Drop-in Kafka for NestJS: module, producer client, consumer wiring, docker compose and Nest CLI schematics (`nest add nest-monorepo-kafka`).",
+  "keywords": [
+    "nestjs",
+    "kafka",
+    "kafkajs",
+    "microservices",
+    "schematics"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "default": "./dist/src/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "schematics": "./dist/schematics/collection.json",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": "^22.22.3 || ^24.15.0 || >=26.0.0"
+  },
+  "scripts": {
+    "build": "pnpm clean && tsc -p tsconfig.build.json && node scripts/copy-schematic-assets.mjs",
+    "clean": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\"",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepack": "pnpm build"
+  },
+  "dependencies": {
+    "@angular-devkit/core": "^22.1.5",
+    "@angular-devkit/schematics": "^22.1.5",
+    "@nestjs/schematics": "^12.0.0"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^12.0.0",
+    "@nestjs/core": "^12.0.0",
+    "@nestjs/microservices": "^12.0.0",
+    "kafkajs": "^2.2.4",
+    "rxjs": "^7.8.0"
+  },
+  "devDependencies": {
+    "@nestjs/common": "^12.1.2",
+    "@nestjs/core": "^12.1.2",
+    "@nestjs/microservices": "^12.1.2",
+    "@nestjs/testing": "^12.1.2",
+    "@types/node": "^24.0.0",
+    "kafkajs": "^2.2.4",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1",
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.2"
+  }
+}

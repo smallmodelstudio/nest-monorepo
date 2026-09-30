@@ -1,0 +1,31 @@
+import { Body, Controller, Post } from '@nestjs/common';
+import { randomUUID } from 'node:crypto';
+import type { ExampleEvent, ExampleReply } from './example.messages<%= ext %>';
+import { ExampleProducer } from './example.producer<%= ext %>';
+
+/**
+ * HTTP endpoints to try the Kafka round trip:
+ *
+ *   curl -X POST localhost:3000/kafka/example/events   -H 'content-type: application/json' -d '{"message":"hello"}'
+ *   curl -X POST localhost:3000/kafka/example/requests -H 'content-type: application/json' -d '{"message":"ping"}'
+ */
+@Controller('kafka/example')
+export class ExampleController {
+  constructor(private readonly producer: ExampleProducer) {}
+
+  @Post('events')
+  async publishEvent(@Body() body: { message?: string }): Promise<ExampleEvent> {
+    const event: ExampleEvent = {
+      id: randomUUID(),
+      message: body?.message ?? 'hello from Nest',
+      createdAt: new Date().toISOString(),
+    };
+    await this.producer.publishEvent(event);
+    return event;
+  }
+
+  @Post('requests')
+  sendRequest(@Body() body: { message?: string }): Promise<ExampleReply> {
+    return this.producer.request(body?.message ?? 'ping');
+  }
+}

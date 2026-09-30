@@ -1,0 +1,22 @@
+{
+  "schematics": {
+    "nest-add": {
+      "description": "Add Kafka to a NestJS project: KafkaModule wiring, hybrid main.ts, example consumer/producer, docker compose and env vars.",
+      "factory": "./nest-add/index.js#main",
+      "schema": "./nest-add/schema.json",
+      "aliases": ["init", "ng-add"]
+    },
+    "consumer": {
+      "description": "Generate a Kafka consumer (@EventPattern controller) and register it in the nearest module.",
+      "factory": "./consumer/index.js#main",
+      "schema": "./consumer/schema.json",
+      "aliases": ["kc"]
+    },
+    "producer": {
+      "description": "Generate a typed Kafka producer (injectable) and register it in the nearest module.",
+      "factory": "./producer/index.js#main",
+      "schema": "./producer/schema.json",
+      "aliases": ["kp"]
+    }
+  }
+}
