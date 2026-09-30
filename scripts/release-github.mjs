@@ -34,12 +34,15 @@ if (!pkgDir) {
   process.exit(1);
 }
 
+// Returns trimmed stdout ('' when stdout isn't piped).
 const run = (cmd, cmdArgs, opts = {}) =>
-  execFileSync(cmd, cmdArgs, {
-    encoding: 'utf8',
-    stdio: ['ignore', 'pipe', 'inherit'],
-    ...opts,
-  }).trim();
+  (
+    execFileSync(cmd, cmdArgs, {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'inherit'],
+      ...opts,
+    }) ?? ''
+  ).trim();
 const git = (gitArgs, opts) => run('git', gitArgs, opts);
 
 const root = git(['rev-parse', '--show-toplevel']);
